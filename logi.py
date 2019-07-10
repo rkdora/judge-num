@@ -87,3 +87,19 @@ for filename in filenames:
 
 x_true = np.array(x_true)
 print(x_true)
+
+pred_logreg = logreg_model.predict(img_test)
+
+# 結果の出力
+print("判定結果")
+print("観測：", x_true)
+print("予測：", pred_logreg)
+print("正答率：", logreg_model.score(img_test, x_true))
+
+# 教師データのスコア： 0.9988864142538976
+# テストデータのスコア： 0.9443826473859844
+# [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [1 1 1 8 1 1 4 8 4 4 1 1 1 1 1 1 1 1 6 1 6 7 1 1 6 1 1 4 4 1]
+# 正答率： 0.16666666666666666
