@@ -66,3 +66,24 @@ for filename in filenames:
     # np.uint8 符号なし8ビット整数型（整数に変換）
     # reshape(1, -1) -1を使用すると、元の要素数に合わせて自動で適切な値が設定される
     img_test = np.r_[img_test, img_data16.astype(np.uint8).reshape(1, -1)]
+
+# sklearn のデータセットから取得、目的変数xと説明変数yに分ける
+digits = load_digits()
+x = digits.data
+y = digits.target
+# 教師データとテストデータに分ける
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.5, random_state=0)
+# ロジスティック回帰のモデルを作る。教師データを使って学習
+logreg = LogisticRegression()
+logreg_model = logreg.fit(x_train, y_train)
+
+print("教師データのスコア：", logreg_model.score(x_train, y_train))
+print("テストデータのスコア：", logreg_model.score(x_test, y_test))
+
+# 画像データの正解を配列にしておく
+x_true = []
+for filename in filenames:
+    x_true = x_true + [int(filename[:1])]
+
+x_true = np.array(x_true)
+print(x_true)
