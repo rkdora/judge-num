@@ -1,4 +1,4 @@
-### パッケージ（os, numpy, PIL）のインポート
+### パッケージ（os, numpy, PIL, matplotlib）のインポート
 # os: ディレクトリの操作を簡単にするモジュール
 import os
 # numpy(np): 配列計算の効率化モジュール
