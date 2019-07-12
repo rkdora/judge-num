@@ -84,9 +84,10 @@ y = digits.target
 # > y: (1797,)
 
 # sklearnのデータセットを画像として保存する
-for i, x in enumerate(X[:10]):
-    plt.imshow(x.reshape(8, 8), cmap='gray')
-    plt.savefig("/home/ryuto/judge-num/sklearn_numbers/sklearn_" + str(i) + ".png")
+# リスト（配列）などのイテラブルオブジェクトの要素とインデックス（カウンタ）を同時に取得したい場合は、enumerate()関数を使う。
+# for i, x in enumerate(X[:10]):
+#     plt.imshow(x.reshape(8, 8), cmap='gray')
+#     plt.savefig("/home/ryuto/judge-num/sklearn_numbers/sklearn_" + str(i) + ".png")
 
 # 教師データとテストデータに分ける
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=0)
