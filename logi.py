@@ -67,34 +67,51 @@ for filename in filenames:
     # reshape(1, -1) -1を使用すると、元の要素数に合わせて自動で適切な値が設定される
     img_test = np.r_[img_test, img_data16.astype(np.uint8).reshape(1, -1)]
 
-# sklearn のデータセットから取得、目的変数xと説明変数yに分ける
+# img_testを調べる。
+# print("img_test.shape", img_test.shape)
+# > img_test.shape (30, 64)
+
+
+# sklearn のデータセットから取得、目的変数Xと説明変数yに分ける
 digits = load_digits()
-x = digits.data
+X = digits.data
 y = digits.target
+
+# X, yを調べる
+# print("X:", X.shape)
+# print("y:", y.shape)
+# > X: (1797, 64)
+# > y: (1797,)
+
+# sklearnのデータセットを画像として保存する
+for i, x in enumerate(X[:10]):
+    plt.imshow(x.reshape(8, 8), cmap='gray')
+    plt.savefig("/home/ryuto/judge-num/sklearn_numbers/sklearn_" + str(i) + ".png")
+
 # 教師データとテストデータに分ける
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.5, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=0)
 # ロジスティック回帰のモデルを作る。教師データを使って学習
 logreg = LogisticRegression()
-logreg_model = logreg.fit(x_train, y_train)
+logreg_model = logreg.fit(X_train, y_train)
 
-print("教師データのスコア：", logreg_model.score(x_train, y_train))
-print("テストデータのスコア：", logreg_model.score(x_test, y_test))
+print("教師データのスコア：", logreg_model.score(X_train, y_train))
+print("テストデータのスコア：", logreg_model.score(X_test, y_test))
 
 # 画像データの正解を配列にしておく
-x_true = []
+X_true = []
 for filename in filenames:
-    x_true = x_true + [int(filename[:1])]
+    X_true = X_true + [int(filename[:1])]
 
-x_true = np.array(x_true)
-print(x_true)
+X_true = np.array(X_true)
+print(X_true)
 
 pred_logreg = logreg_model.predict(img_test)
 
 # 結果の出力
 print("判定結果")
-print("観測：", x_true)
+print("観測：", X_true)
 print("予測：", pred_logreg)
-print("正答率：", logreg_model.score(img_test, x_true))
+print("正答率：", logreg_model.score(img_test, X_true))
 
 # 教師データのスコア： 0.9988864142538976
 # テストデータのスコア： 0.9443826473859844
