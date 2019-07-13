@@ -38,7 +38,13 @@ sklearnのデータセットとロジスティック回帰を用い、手書き�
   ```
 
 ## 正答率の向上を試みる
-画像データを[handwrite_numbers](/handwrite_numbers)から、[handwrite2_numbers](/handwrite2_numbers)へと変更した。
+画像データを[handwrite_numbers](/handwrite_numbers)から、[handwrite2_numbers](/handwrite2_numbers)へと変更した。  
+handwrite_numbers
+![handwrite_numbers](https://user-images.githubusercontent.com/20394831/61168931-9f6b6500-a590-11e9-98c2-5d480997476e.png)
+
+handwrite2_numbers
+![handwrite2_numbers](https://user-images.githubusercontent.com/20394831/61168932-a1cdbf00-a590-11e9-9431-1f62ba2ef6da.png)
+
 すると、
 ```
 判定結果
