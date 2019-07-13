@@ -95,7 +95,15 @@ y = digits.target
 # 教師データとテストデータに分ける
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=0)
 # ロジスティック回帰のモデルを作る。教師データを使って学習
-logreg = LogisticRegression()
+# FutureWarning: Default solver will be changed to 'lbfgs' in 0.22. Specify a solver to silence this warning.
+#   FutureWarning)
+# solver='liblinear'を追記することで、上記のWarningが出ないようになった。
+
+# FutureWarning: Default multi_class will be changed to 'auto' in 0.22. Specify the multi_class option to silence this warning.
+#   "this warning.", FutureWarning)
+# 同様に、multi_class='auto'を追記することで、上記のWarningが出ないようになった。
+# 参考記事： https://machinelearningmastery.com/how-to-fix-futurewarning-messages-in-scikit-learn/
+logreg = LogisticRegression(solver='liblinear', multi_class='auto')
 logreg_model = logreg.fit(X_train, y_train)
 
 print("教師データのスコア：", logreg_model.score(X_train, y_train))
