@@ -41,7 +41,7 @@ for filename in filenames:
     # resize_img.show()
 
     # サイズを更に縮めて配列を作り、sklearnのdigitsと同じ型（8 × 8）にする
-    # 256は0から255までの合計256種類という意味
+    # 通常のpng画像の明度は0〜255なので、サンプルデータに合わせて0〜15に変換
     img_data256 = np.array([])
     # 64画素の1画素ずつ明るさをプロット
     for y in range(8):
