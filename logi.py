@@ -22,7 +22,8 @@ from sklearn.model_selection import train_test_split
 
 # 画像の入っているフォルダを指定し、中身のファイル名を取得
 # filenames = sorted(os.listdir('handwrite_numbers'))
-filenames = sorted(os.listdir('handwrite2_numbers'))
+# filenames = sorted(os.listdir('handwrite2_numbers'))
+filenames = sorted(os.listdir('handwrite3_numbers'))
 # print(filenames)
 # ['eight1.png', 'eight2.png', 'eight3.png', 'five1.png', 'five2.png', 'five3.png', 'four1.png', 'four2.png', 'four3.png', 'nine1.png', 'nine2.png', 'nine3.png', 'one1.png', 'one2.png', 'one3.png', 'seven1.png', 'seven2.png', 'seven3.png', 'six1.png', 'six2.png', 'six3.png', 'three1.png', 'three2.png', 'three3.png', 'two1.png', 'two2.png', 'two3.png', 'zero1.png', 'zero2.png', 'zero3.png']
 
@@ -33,7 +34,7 @@ for filename in filenames:
     # 画像ファイルを取得、グレースケール（モノクロ）にしてサイズ変更
     # img = Image.open('handwrite_numbers/' + filename).convert('L')
 
-    img = Image.open('handwrite2_numbers/' + filename).convert('L')
+    img = Image.open('handwrite3_numbers/' + filename).convert('L')
     # 画像の表示
     # img.show()
     resize_img = img.resize((64, 64))
@@ -60,8 +61,8 @@ for filename in filenames:
     # 加工した画像データをedited_imagesに出力する
     # reshape(8, 8)で8 × 8にする
     # cmap='gray'でグレースケールで表示
-    plt.imshow(img_data16.astype(np.uint8).reshape(8, 8), cmap='gray')
-    plt.savefig("/home/ryuto/judge-num/edited2_numbers/edited_" + filename.replace(".png", "") + ".png")
+    # plt.imshow(img_data16.astype(np.uint8).reshape(8, 8), cmap='gray')
+    # plt.savefig("/Users/ryuto/works/judge-num/edited3_numbers/edited_" + filename.replace(".png", "") + ".png")
 
     # 加工した画像データの配列をまとめる
     # np._r 配列同士の結合
@@ -141,4 +142,13 @@ print("正答率：", logreg_model.score(img_test, X_true))
 # 判定結果
 # 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
 # 予測： [0 0 0 6 1 1 2 2 2 3 6 9 6 4 7 5 5 1 5 4 4 7 1 7 9 5 5 5 9 9]
+# 正答率： 0.5333333333333333
+
+## handwrite3_numbers
+# 教師データのスコア： 0.9988864142538976
+# テストデータのスコア： 0.9443826473859844
+# [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [0 0 0 6 1 1 2 8 2 9 9 1 6 6 4 5 1 5 4 4 6 7 7 7 3 1 4 1 9 9]
 # 正答率： 0.5333333333333333
