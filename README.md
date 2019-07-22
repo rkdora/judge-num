@@ -56,11 +56,13 @@ mnist を加工して作成した、 縦8ピクセル・横8ピクセル、1800�
 ### 画像データの変更
 画像データを[handwrite_numbers](/handwrite_numbers)から、[handwrite2_numbers](/handwrite2_numbers)へと変更した。  
 handwrite_numbers
-![handwrite_numbers](https://user-images.githubusercontent.com/20394831/61168931-9f6b6500-a590-11e9-98c2-5d480997476e.png)
+
+![handwrite_numbers](https://user-images.githubusercontent.com/20394831/61602919-7e80cf00-ac76-11e9-88e6-63a82ad401d1.png)
 
 文字を大きくした。
 handwrite2_numbers
-![handwrite2_numbers](https://user-images.githubusercontent.com/20394831/61168932-a1cdbf00-a590-11e9-9431-1f62ba2ef6da.png)
+
+![handwrite2_numbers](https://user-images.githubusercontent.com/20394831/61602921-83458300-ac76-11e9-9859-948e079050b3.png)
 
 すると、
 ```
@@ -75,6 +77,9 @@ handwrite2_numbers
 文字を太くした。
 handwrite3_numbers
 
+![handwrite3_numbers](https://user-images.githubusercontent.com/20394831/61602853-35c91600-ac76-11e9-8978-bd3e3ee45381.png)
+
+
 予測された値に変化はあったが、正答率に変化はなかった。
 ```
 判定結果
@@ -83,11 +88,26 @@ handwrite3_numbers
 正答率： 0.5333333333333333
 ```
 
+sklearn_numbers
+
+![sklearn_numbers](https://user-images.githubusercontent.com/20394831/61603014-e20afc80-ac76-11e9-8b94-7656f0ddaa58.png)
+
+
 ## ロジスティック回帰(MNIST)
 **MNIST**  
 MNIST(エムニスト / Mixed National Institute of Standards and Technology database)とは、手書き数字画像60,000枚と、テスト画像10,000枚を集めた画像データセット。
 縦28ピクセル・横28ピクセルで構成され、0~255の256段階で作られている。
 一番明るい部分(文字)が255、一番暗い部分が0
+
+mnist_numbers
+
+![mnist_numbers](https://user-images.githubusercontent.com/20394831/61603045-06ff6f80-ac77-11e9-9088-8f0e34bebb87.png)
+
+handwrite_numbersを、mnistに合うように加工した  
+edited_mnist_numbers
+
+![edited_mnist_numbers](https://user-images.githubusercontent.com/20394831/61603098-3f9f4900-ac77-11e9-80f2-3647c4746b93.png)
+
 
 ### logy.pyとの差異
 - 8ピクセルから28ピクセルへ
