@@ -22,7 +22,8 @@ from sklearn.model_selection import train_test_split
 
 # 画像の入っているフォルダを指定し、中身のファイル名を取得
 # filenames = sorted(os.listdir('handwrite_numbers'))
-filenames = sorted(os.listdir('handwrite2_numbers'))
+filenames = sorted(os.listdir('handwrite_numbers'))
+# filenames = sorted(os.listdir('handwrite3_numbers'))
 # print(filenames)
 # ['eight1.png', 'eight2.png', 'eight3.png', 'five1.png', 'five2.png', 'five3.png', 'four1.png', 'four2.png', 'four3.png', 'nine1.png', 'nine2.png', 'nine3.png', 'one1.png', 'one2.png', 'one3.png', 'seven1.png', 'seven2.png', 'seven3.png', 'six1.png', 'six2.png', 'six3.png', 'three1.png', 'three2.png', 'three3.png', 'two1.png', 'two2.png', 'two3.png', 'zero1.png', 'zero2.png', 'zero3.png']
 
@@ -33,7 +34,7 @@ for filename in filenames:
     # 画像ファイルを取得、グレースケール（モノクロ）にしてサイズ変更
     # img = Image.open('handwrite_numbers/' + filename).convert('L')
 
-    img = Image.open('handwrite2_numbers/' + filename).convert('L')
+    img = Image.open('handwrite_numbers/' + filename).convert('L')
     # 画像の表示
     # img.show()
     resize_img = img.resize((784, 784))
@@ -61,7 +62,7 @@ for filename in filenames:
     # 加工した画像データをmnist_edited_imagesに出力する
     # cmap='gray'でグレースケールで表示
     # plt.imshow(img_data.reshape(28, 28), cmap='gray')
-    # plt.savefig("/Users/ryuto/works/judge-num/mnist_edited_numbers/edited_" + filename.replace(".png", "") + ".png")
+    # plt.savefig("/Users/ryuto/works/judge-num/mnist_edited3_numbers/edited_" + filename.replace(".png", "") + ".png")
 
     img_test = np.r_[img_test, img_data.reshape(1, -1)]
 
@@ -75,8 +76,8 @@ y = mnist.target
 #     plt.imshow(x.reshape(28, 28), cmap='gray')
 #     plt.savefig("/Users/ryuto/works/judge-num/mnist_numbers/mnist_" + str(i) + ".png")
 
-train_size = 500
-test_size = 100
+train_size = 50000
+test_size = 10000
 # # 教師データとテストデータに分ける
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, train_size=train_size, random_state=0)
 # # ロジスティック回帰のモデルを作る。教師データを使って学習
@@ -100,30 +101,51 @@ for filename in filenames:
     X_true = X_true + [int(filename[:1])]
 
 X_true = np.array(X_true)
-print(X_true)
 
 pred_logreg = logreg_model.predict(img_test)
 
 # 結果の出力
 print("判定結果")
 print("観測：", X_true)
-print("予測：", pred_logreg)
+print("予測：", pred_logreg.astype(np.uint8))
 print("正答率：", logreg_model.score(img_test, X_true))
+
+# uint8 8ビットの符号なし整数型 8ビットの値の範囲は0～255、16ビットでは0～65,535、32ビットでは0～4,294,967,295となる
+
+### train_size = 500,test_size = 100
+# 教師データのスコア： 1.0
+# テストデータのスコア： 0.84
+## handwrite_numbers
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [0 7 5 5 5 5 8 2 2 7 5 5 4 4 4 4 5 5 6 6 6 7 7 7 5 5 8 9 9 9]
+# 正答率： 0.6
 #
-# ## handwrite_numbers
-# # 教師データのスコア： 0.9988864142538976
-# # テストデータのスコア： 0.9443826473859844
-# # [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
-# # 判定結果
-# # 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
-# # 予測： [1 1 1 8 1 1 4 8 4 4 1 1 1 1 1 1 1 1 6 1 6 7 1 1 6 1 1 4 4 1]
-# # 正答率： 0.16666666666666666
-#
-# ## handwrite2_numbers
-# # 教師データのスコア： 0.9988864142538976
-# # テストデータのスコア： 0.9443826473859844
-# # [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
-# # 判定結果
-# # 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
-# # 予測： [0 0 0 6 1 1 2 2 2 3 6 9 6 4 7 5 5 1 5 4 4 7 1 7 9 5 5 5 9 9]
-# # 正答率： 0.5333333333333333
+## handwrite2_numbers,train_size = 500,test_size = 100
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [3 3 3 8 1 8 7 0 8 3 9 4 4 2 1 4 1 5 5 4 3 2 7 7 5 9 3 1 4 4]
+# 正答率： 0.2
+
+## handwrite3_numbers,train_size = 500,test_size = 100
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [2 0 2 8 1 8 2 2 7 3 3 8 2 4 8 3 5 4 4 4 6 2 4 2 3 8 5 1 3 3]
+# 正答率： 0.3333333333333333
+
+### train_size = 50000 test_size = 10000
+## handwrite_numbers
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [0 7 5 5 5 5 2 2 2 5 1 5 5 5 4 5 5 5 6 6 6 7 7 7 5 5 5 9 9 7]
+# 正答率： 0.5333333333333333
+## handwrite2_numbers
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [3 3 3 5 1 5 3 3 3 3 6 1 6 2 3 5 3 5 3 3 3 3 3 3 3 3 5 1 3 3]
+# 正答率： 0.13333333333333333
+## handwrite3_numbers
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [3 0 3 5 1 5 2 2 3 3 3 8 2 2 4 3 5 3 3 3 6 7 3 3 3 8 3 3 3 3]
+# 正答率： 0.36666666666666664
