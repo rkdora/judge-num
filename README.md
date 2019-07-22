@@ -57,12 +57,12 @@ mnist を加工して作成した、 縦8ピクセル・横8ピクセル、1800�
 画像データを[handwrite_numbers](/handwrite_numbers)から、[handwrite2_numbers](/handwrite2_numbers)へと変更した。  
 handwrite_numbers
 
-![handwrite_numbers](https://user-images.githubusercontent.com/20394831/61602919-7e80cf00-ac76-11e9-88e6-63a82ad401d1.png)
+![handwrite_numbers](https://user-images.githubusercontent.com/20394831/61602921-83458300-ac76-11e9-9859-948e079050b3.png)
 
 文字を大きくした。
 handwrite2_numbers
 
-![handwrite2_numbers](https://user-images.githubusercontent.com/20394831/61602921-83458300-ac76-11e9-9859-948e079050b3.png)
+![handwrite2_numbers](https://user-images.githubusercontent.com/20394831/61602919-7e80cf00-ac76-11e9-88e6-63a82ad401d1.png)
 
 すると、
 ```
