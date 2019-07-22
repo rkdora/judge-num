@@ -127,7 +127,7 @@ print("正答率：", svm_model.score(img_test, X_true))
 ### train_size = 5000,test_size = 1000
 # 教師データのスコア： 0.91
 # テストデータのスコア： 0.893
-## handwrite2_numbers
+## handwrite_numbers
 # 判定結果
 # 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
 # 予測： [7 7 7 5 1 5 7 2 2 5 5 5 5 4 4 5 5 5 6 6 6 7 7 7 5 5 1 1 1 7]
