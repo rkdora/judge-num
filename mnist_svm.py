@@ -18,11 +18,14 @@ from sklearn import svm
 # 教師データの分割をするモジュール(train_test_split)
 from sklearn.model_selection import train_test_split
 
+# timeit: 処理時間を測定するためのモジュール
+import timeit
+
 ### 画像データ読み込み、加工
 
 # 画像の入っているフォルダを指定し、中身のファイル名を取得
 # filenames = sorted(os.listdir('handwrite_numbers'))
-filenames = sorted(os.listdir('handwrite_numbers'))
+filenames = sorted(os.listdir('handwrite2_numbers'))
 # filenames = sorted(os.listdir('handwrite3_numbers'))
 # print(filenames)
 # ['eight1.png', 'eight2.png', 'eight3.png', 'five1.png', 'five2.png', 'five3.png', 'four1.png', 'four2.png', 'four3.png', 'nine1.png', 'nine2.png', 'nine3.png', 'one1.png', 'one2.png', 'one3.png', 'seven1.png', 'seven2.png', 'seven3.png', 'six1.png', 'six2.png', 'six3.png', 'three1.png', 'three2.png', 'three3.png', 'two1.png', 'two2.png', 'two3.png', 'zero1.png', 'zero2.png', 'zero3.png']
@@ -34,7 +37,7 @@ for filename in filenames:
     # 画像ファイルを取得、グレースケール（モノクロ）にしてサイズ変更
     # img = Image.open('handwrite_numbers/' + filename).convert('L')
 
-    img = Image.open('handwrite3_numbers/' + filename).convert('L')
+    img = Image.open('handwrite2_numbers/' + filename).convert('L')
     # 画像の表示
     # img.show()
     resize_img = img.resize((784, 784))
@@ -76,17 +79,16 @@ y = mnist.target
 #     plt.imshow(x.reshape(28, 28), cmap='gray')
 #     plt.savefig("/Users/ryuto/works/judge-num/mnist_numbers/mnist_" + str(i) + ".png")
 
-train_size = 5000
-test_size = 1000
+train_size = 1000
+test_size = 700
 # # 教師データとテストデータに分ける
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, train_size=train_size, random_state=0)
 # サポートベクターマシンのモデルを作る
 clf = svm.SVC(gamma=0.001)
-svm_model = clf.fit(X_train, y_train)
-
-
-print("教師データのスコア：", svm_model.score(X_train, y_train))
-print("テストデータのスコア：", svm_model.score(X_test, y_test))
+loop_count = 10
+print("学習時間：", timeit.timeit(lambda: clf.fit(X_train, y_train), number=loop_count) / loop_count)
+print("教師データのスコア：", clf.score(X_train, y_train))
+print("テストデータのスコア：", clf.score(X_test, y_test))
 
 # 画像データの正解を配列にしておく
 X_true = []
@@ -95,13 +97,13 @@ for filename in filenames:
 
 X_true = np.array(X_true)
 
-pred_svm = svm_model.predict(img_test)
+pred_svm = clf.predict(img_test)
 
 # 結果の出力
 print("判定結果")
 print("観測：", X_true)
 print("予測：", pred_svm.astype(np.uint8))
-print("正答率：", svm_model.score(img_test, X_true))
+print("正答率：", clf.score(img_test, X_true))
 
 # uint8 8ビットの符号なし整数型 8ビットの値の範囲は0～255、16ビットでは0～65,535、32ビットでは0～4,294,967,295となる
 
@@ -142,3 +144,23 @@ print("正答率：", svm_model.score(img_test, X_true))
 # 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
 # 予測： [3 0 3 5 1 1 2 2 7 3 3 8 2 6 6 3 5 4 3 5 6 2 5 3 5 5 3 1 7 7]
 # 正答率： 0.3
+
+### train_size = 1000, test_size = 700
+# 学習時間： 0.9919772783999999
+# 教師データのスコア： 0.889
+# テストデータのスコア： 0.8314285714285714
+## handwrite_numbers
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [7 7 7 1 1 1 1 2 1 5 1 1 4 4 4 4 5 5 6 6 6 1 1 7 5 5 1 1 1 1]
+# 正答率： 0.43333333333333335
+## handwrite2_numbers
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [1 5 5 1 1 1 1 5 1 1 4 5 4 1 1 5 1 7 4 4 4 4 4 1 5 5 5 1 4 4]
+# 正答率： 0.16666666666666666
+## handwrite3_numbers
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [0 0 3 1 1 1 2 2 7 3 5 3 6 6 6 3 5 4 3 4 6 2 4 2 5 5 5 1 7 7]
+# 正答率： 0.36666666666666664
