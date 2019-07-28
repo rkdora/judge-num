@@ -18,6 +18,9 @@ from sklearn.linear_model import LogisticRegression
 # 教師データの分割をするモジュール(train_test_split)
 from sklearn.model_selection import train_test_split
 
+# timeit: 処理時間を測定するためのモジュール
+import timeit
+
 ### 画像データ読み込み、加工
 
 # 画像の入っているフォルダを指定し、中身のファイル名を取得
@@ -34,7 +37,7 @@ for filename in filenames:
     # 画像ファイルを取得、グレースケール（モノクロ）にしてサイズ変更
     # img = Image.open('handwrite_numbers/' + filename).convert('L')
 
-    img = Image.open('handwrite_numbers/' + filename).convert('L')
+    img = Image.open('handwrite3_numbers/' + filename).convert('L')
     # 画像の表示
     # img.show()
     resize_img = img.resize((784, 784))
@@ -76,8 +79,8 @@ y = mnist.target
 #     plt.imshow(x.reshape(28, 28), cmap='gray')
 #     plt.savefig("/Users/ryuto/works/judge-num/mnist_numbers/mnist_" + str(i) + ".png")
 
-train_size = 50000
-test_size = 10000
+train_size = 1000
+test_size = 700
 # # 教師データとテストデータに分ける
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, train_size=train_size, random_state=0)
 # # ロジスティック回帰のモデルを作る。教師データを使って学習
@@ -90,10 +93,11 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, t
 # # 同様に、multi_class='auto'を追記することで、上記のWarningが出ないようになった。
 # # 参考記事： https://machinelearningmastery.com/how-to-fix-futurewarning-messages-in-scikit-learn/
 logreg = LogisticRegression(solver='liblinear', multi_class='auto')
-logreg_model = logreg.fit(X_train, y_train)
 
-print("教師データのスコア：", logreg_model.score(X_train, y_train))
-print("テストデータのスコア：", logreg_model.score(X_test, y_test))
+loop_count = 10
+print("学習時間：", timeit.timeit(lambda: logreg.fit(X_train, y_train), number=loop_count) / loop_count)
+print("教師データのスコア：", logreg.score(X_train, y_train))
+print("テストデータのスコア：", logreg.score(X_test, y_test))
 
 # 画像データの正解を配列にしておく
 X_true = []
@@ -102,13 +106,13 @@ for filename in filenames:
 
 X_true = np.array(X_true)
 
-pred_logreg = logreg_model.predict(img_test)
+pred_logreg = logreg.predict(img_test)
 
 # 結果の出力
 print("判定結果")
 print("観測：", X_true)
 print("予測：", pred_logreg.astype(np.uint8))
-print("正答率：", logreg_model.score(img_test, X_true))
+print("正答率：", logreg.score(img_test, X_true))
 
 # uint8 8ビットの符号なし整数型 8ビットの値の範囲は0～255、16ビットでは0～65,535、32ビットでは0～4,294,967,295となる
 
@@ -152,4 +156,24 @@ print("正答率：", logreg_model.score(img_test, X_true))
 # 判定結果
 # 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
 # 予測： [3 0 3 5 1 5 2 2 3 3 3 8 2 2 4 3 5 3 3 3 6 7 3 3 3 8 3 3 3 3]
+# 正答率： 0.36666666666666664
+
+### train_size = 1000, test_size = 700
+# 学習時間： 0.2877770871
+# 教師データのスコア： 1.0
+# テストデータのスコア： 0.8614285714285714
+## handwrite_numbers
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [0 7 0 5 5 5 2 2 2 5 6 5 6 4 1 6 9 6 6 5 6 7 7 7 5 5 8 9 9 3]
+# 正答率： 0.4666666666666667
+## handwrite2_numbers
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [3 3 3 6 1 6 7 6 3 3 6 5 6 2 2 5 3 7 3 3 3 3 6 7 3 5 9 1 3 3]
+# 正答率： 0.13333333333333333
+## handwrite3_numbers
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [3 0 3 6 1 8 2 2 3 3 3 9 2 2 4 5 5 5 3 2 6 4 3 4 3 5 5 4 7 3]
 # 正答率： 0.36666666666666664
