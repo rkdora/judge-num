@@ -349,6 +349,10 @@ handwrite2_numbers
 - ロジスティック回帰 : 約7200ms
 - SVM : 約535000ms
 
+### 考察
+SVMと比べ、ロジスティック回帰のほうがかかる時間が少ない。  
+しかし、SVMの方が少ないデータで高い精度のモデルをつくることができる。
+
 ## 参考記事
 [【機械学習初心者向け】ロジスティック回帰で手書き文字認識【機械学習の実装】 | Aidemy Blog](https://blog.aidemy.net/entry/2017/07/11/214635)  
 [scikit-learnのSVMでMNISTの手書き数字データを分類](https://note.nkmk.me/python-scikit-learn-svm-mnist/)
