@@ -37,17 +37,16 @@ for filename in filenames:
     # 画像ファイルを取得、グレースケール（モノクロ）にしてサイズ変更
     # img = Image.open('handwrite_numbers/' + filename).convert('L')
 
-    img = Image.open('handwrite3_numbers/' + filename).convert('L')
+    img = Image.open('handwrite_numbers/' + filename).convert('L')
     # 画像の表示
     # img.show()
     resize_img = img.resize((784, 784))
     # リサイズされていることを確認
     # resize_img.show()
 
-    # サイズを更に縮めて配列を作り、sklearnのdigitsと同じ型（8 × 8）にする
-    # 通常のpng画像の明度は0〜255なので、サンプルデータに合わせて0〜15に変換
+    # サイズを更に縮めて配列を作り、MNISTと同じ型（28 × 28）にする
     img_data256 = np.array([])
-    # 64画素の1画素ずつ明るさをプロット
+    # 784画素の1画素ずつ明るさをプロット
     for y in range(28):
         for x in range(28):
             # 1画素に縮小される範囲の明るさの二乗平均をとり、白黒反転(sklearnのdigitsに合わせるため)
@@ -57,10 +56,6 @@ for filename in filenames:
             img_data256 = np.append(img_data256, bright)
 
     img_data = img_data256 / 255
-    # 画像データ内の最小値が0, 最大値が16になるようになるように計算(sklearnのdigitsに合わせるため)
-    # min_bright = img_data256.min()
-    # max_bright = img_data256.max()
-    # img_data16 = (img_data256 - min_bright) / (max_bright - min_bright) * 16
 
     # 加工した画像データをmnist_edited_imagesに出力する
     # cmap='gray'でグレースケールで表示
@@ -79,8 +74,8 @@ y = mnist.target
 #     plt.imshow(x.reshape(28, 28), cmap='gray')
 #     plt.savefig("/Users/ryuto/works/judge-num/mnist_numbers/mnist_" + str(i) + ".png")
 
-train_size = 1000
-test_size = 700
+train_size = 50000
+test_size = 10000
 # # 教師データとテストデータに分ける
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, train_size=train_size, random_state=0)
 # # ロジスティック回帰のモデルを作る。教師データを使って学習
@@ -117,6 +112,7 @@ print("正答率：", logreg.score(img_test, X_true))
 # uint8 8ビットの符号なし整数型 8ビットの値の範囲は0～255、16ビットでは0～65,535、32ビットでは0～4,294,967,295となる
 
 ### train_size = 500,test_size = 100
+# 学習時間： 0.1249850742
 # 教師データのスコア： 1.0
 # テストデータのスコア： 0.84
 ## handwrite_numbers
@@ -137,7 +133,28 @@ print("正答率：", logreg.score(img_test, X_true))
 # 予測： [2 0 2 8 1 8 2 2 7 3 3 8 2 4 8 3 5 4 4 4 6 2 4 2 3 8 5 1 3 3]
 # 正答率： 0.3333333333333333
 
+### train_size = 5000, test_size = 1000
+# 学習時間： 3.4751767758
+# 教師データのスコア： 0.9622
+# テストデータのスコア： 0.891
+## handwrite_numbers
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [0 9 0 5 5 5 2 2 2 5 5 5 4 4 5 6 5 6 6 5 6 7 7 7 5 5 1 1 9 9]
+# 正答率： 0.5
+## handwrite2_numbers
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [7 7 7 5 1 5 3 3 3 3 9 3 7 2 3 3 5 5 3 3 3 7 7 7 3 3 7 7 7 7]
+# 正答率： 0.26666666666666666
+## handwrite3_numbers
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [3 0 3 5 1 5 2 2 7 3 3 8 2 2 5 3 9 3 3 3 6 7 3 7 3 5 5 7 7 3]
+# 正答率： 0.3
+
 ### train_size = 50000 test_size = 10000
+# 学習時間： 72.44821099129999
 # 教師データのスコア： 0.93044
 # テストデータのスコア： 0.9158
 ## handwrite_numbers

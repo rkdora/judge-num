@@ -56,7 +56,7 @@ for filename in filenames:
             bright = 255 - crop.mean()**2 / 255
             img_data256 = np.append(img_data256, bright)
 
-    # 画像データ内の最小値が0, 最大値が16になるようになるように計算(sklearnのdigitsに合わせるため)
+    # 画像データ内の最小値が0, 最大値が15になるようになるように計算(sklearnのdigitsに合わせるため)
     min_bright = img_data256.min()
     max_bright = img_data256.max()
     img_data16 = (img_data256 - min_bright) / (max_bright - min_bright) * 16

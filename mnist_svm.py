@@ -25,7 +25,7 @@ import timeit
 
 # 画像の入っているフォルダを指定し、中身のファイル名を取得
 # filenames = sorted(os.listdir('handwrite_numbers'))
-filenames = sorted(os.listdir('handwrite2_numbers'))
+filenames = sorted(os.listdir('handwrite_numbers'))
 # filenames = sorted(os.listdir('handwrite3_numbers'))
 # print(filenames)
 # ['eight1.png', 'eight2.png', 'eight3.png', 'five1.png', 'five2.png', 'five3.png', 'four1.png', 'four2.png', 'four3.png', 'nine1.png', 'nine2.png', 'nine3.png', 'one1.png', 'one2.png', 'one3.png', 'seven1.png', 'seven2.png', 'seven3.png', 'six1.png', 'six2.png', 'six3.png', 'three1.png', 'three2.png', 'three3.png', 'two1.png', 'two2.png', 'two3.png', 'zero1.png', 'zero2.png', 'zero3.png']
@@ -37,17 +37,16 @@ for filename in filenames:
     # 画像ファイルを取得、グレースケール（モノクロ）にしてサイズ変更
     # img = Image.open('handwrite_numbers/' + filename).convert('L')
 
-    img = Image.open('handwrite2_numbers/' + filename).convert('L')
+    img = Image.open('handwrite3_numbers/' + filename).convert('L')
     # 画像の表示
     # img.show()
     resize_img = img.resize((784, 784))
     # リサイズされていることを確認
     # resize_img.show()
 
-    # サイズを更に縮めて配列を作り、sklearnのdigitsと同じ型（8 × 8）にする
-    # 通常のpng画像の明度は0〜255なので、サンプルデータに合わせて0〜15に変換
+    # サイズを更に縮めて配列を作り、MNISTと同じ型（28 × 28）にする
     img_data256 = np.array([])
-    # 64画素の1画素ずつ明るさをプロット
+    # 784画素の1画素ずつ明るさをプロット
     for y in range(28):
         for x in range(28):
             # 1画素に縮小される範囲の明るさの二乗平均をとり、白黒反転(sklearnのdigitsに合わせるため)
@@ -57,11 +56,6 @@ for filename in filenames:
             img_data256 = np.append(img_data256, bright)
 
     img_data = img_data256 / 255
-    # 画像データ内の最小値が0, 最大値が16になるようになるように計算(sklearnのdigitsに合わせるため)
-    # min_bright = img_data256.min()
-    # max_bright = img_data256.max()
-    # img_data16 = (img_data256 - min_bright) / (max_bright - min_bright) * 16
-
     # 加工した画像データをmnist_edited_imagesに出力する
     # cmap='gray'でグレースケールで表示
     # plt.imshow(img_data.reshape(28, 28), cmap='gray')
@@ -79,13 +73,13 @@ y = mnist.target
 #     plt.imshow(x.reshape(28, 28), cmap='gray')
 #     plt.savefig("/Users/ryuto/works/judge-num/mnist_numbers/mnist_" + str(i) + ".png")
 
-train_size = 1000
-test_size = 700
+train_size = 50000
+test_size = 10000
 # # 教師データとテストデータに分ける
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, train_size=train_size, random_state=0)
 # サポートベクターマシンのモデルを作る
 clf = svm.SVC(gamma=0.001)
-loop_count = 10
+loop_count = 1
 print("学習時間：", timeit.timeit(lambda: clf.fit(X_train, y_train), number=loop_count) / loop_count)
 print("教師データのスコア：", clf.score(X_train, y_train))
 print("テストデータのスコア：", clf.score(X_test, y_test))
@@ -108,6 +102,7 @@ print("正答率：", clf.score(img_test, X_true))
 # uint8 8ビットの符号なし整数型 8ビットの値の範囲は0～255、16ビットでは0～65,535、32ビットでは0～4,294,967,295となる
 
 ### train_size = 500,test_size = 100
+# 学習時間： 0.31701250020000005
 # 教師データのスコア： 0.782
 # テストデータのスコア： 0.81
 ## handwrite_numbers
@@ -127,6 +122,7 @@ print("正答率：", clf.score(img_test, X_true))
 # 正答率： 0.4666666666666667
 
 ### train_size = 5000,test_size = 1000
+# 学習時間： 13.5781102763
 # 教師データのスコア： 0.91
 # テストデータのスコア： 0.893
 ## handwrite_numbers
@@ -144,6 +140,26 @@ print("正答率：", clf.score(img_test, X_true))
 # 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
 # 予測： [3 0 3 5 1 1 2 2 7 3 3 8 2 6 6 3 5 4 3 5 6 2 5 3 5 5 3 1 7 7]
 # 正答率： 0.3
+
+### train_size = 50000, test_size = 10000
+# 学習時間： 535.932242031
+# 教師データのスコア： 0.93824
+# テストデータのスコア： 0.9342
+## handwrite_numbers
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [7 7 7 5 5 5 2 2 2 5 5 5 5 4 4 6 5 5 6 6 6 7 7 7 5 5 8 9 9 9]
+# 正答率： 0.5666666666666667
+## handwrite2_numbers
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [5 5 5 5 1 5 7 5 7 3 4 5 6 2 2 5 5 5 3 5 5 2 7 7 5 5 5 1 4 4]
+# 正答率： 0.23333333333333334
+## handwrite3_numbers
+# 判定結果
+# 観測： [0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 5 5 5 6 6 6 7 7 7 8 8 8 9 9 9]
+# 予測： [2 0 3 5 1 5 2 2 2 3 3 3 2 2 2 3 5 5 3 2 6 2 5 3 3 5 8 7 7 7]
+# 正答率： 0.4
 
 ### train_size = 1000, test_size = 700
 # 学習時間： 0.9919772783999999
